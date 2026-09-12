@@ -102,6 +102,30 @@ export const Bubble = (props: BubbleProps) => {
   const showTooltip = () => bubbleProps.theme?.tooltip?.showTooltip ?? false;
   const [isTooltipDismissed, setIsTooltipDismissed] = createSignal(false);
 
+  const isTooltipClosedInStorage = () => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const key = `${props.chatflowid ? `${props.chatflowid}_` : ''}TOOLTIP_CLOSED`;
+        return localStorage.getItem(key) === 'true';
+      }
+    } catch {
+      // ignore security/storage errors
+    }
+    return false;
+  };
+
+  const handleTooltipClose = () => {
+    setIsTooltipDismissed(true);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const key = `${props.chatflowid ? `${props.chatflowid}_` : ''}TOOLTIP_CLOSED`;
+        localStorage.setItem(key, 'true');
+      }
+    } catch {
+      // ignore security/storage errors
+    }
+  };
+
   return (
     <>
       <Show when={props.theme?.customCSS}>
@@ -109,7 +133,7 @@ export const Bubble = (props: BubbleProps) => {
       </Show>
       <style>{styles}</style>
       <Tooltip
-        showTooltip={showTooltip() && !isBotOpened() && !isTooltipDismissed()}
+        showTooltip={showTooltip() && !isBotOpened() && !isTooltipDismissed() && !isTooltipClosedInStorage()}
         position={buttonPosition()}
         buttonSize={buttonSize}
         tooltipMessage={bubbleProps.theme?.tooltip?.tooltipMessage}
@@ -117,7 +141,7 @@ export const Bubble = (props: BubbleProps) => {
         tooltipTextColor={bubbleProps.theme?.tooltip?.tooltipTextColor}
         tooltipFontSize={bubbleProps.theme?.tooltip?.tooltipFontSize} // Set the tooltip font size
         showCloseButton={bubbleProps.theme?.tooltip?.showCloseButton ?? bubbleProps.theme?.tooltip?.showCloseSign}
-        onClose={() => setIsTooltipDismissed(true)}
+        onClose={handleTooltipClose}
       />
       <BubbleButton
         {...bubbleProps.theme?.button}
