@@ -159,6 +159,7 @@ You can also customize chatbot with different configuration
         tooltipBackgroundColor: 'black',
         tooltipTextColor: 'white',
         tooltipFontSize: 16,
+        showCloseButton: true, // (optional) parameter to show close button on tooltip (defaults to true)
       },
       disclaimer: {
         title: 'Disclaimer',
