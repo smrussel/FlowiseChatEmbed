@@ -103,6 +103,8 @@ export type ToolTipTheme = {
   tooltipBackgroundColor?: string;
   tooltipTextColor?: string;
   tooltipFontSize?: number;
+  showCloseButton?: boolean;
+  showCloseSign?: boolean;
 };
 
 export type autoWindowOpenTheme = {

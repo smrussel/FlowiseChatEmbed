@@ -99,7 +99,8 @@ export const Bubble = (props: BubbleProps) => {
     };
   });
 
-  const showTooltip = bubbleProps.theme?.tooltip?.showTooltip ?? false;
+  const showTooltip = () => bubbleProps.theme?.tooltip?.showTooltip ?? false;
+  const [isTooltipDismissed, setIsTooltipDismissed] = createSignal(false);
 
   return (
     <>
@@ -108,13 +109,15 @@ export const Bubble = (props: BubbleProps) => {
       </Show>
       <style>{styles}</style>
       <Tooltip
-        showTooltip={showTooltip && !isBotOpened()}
+        showTooltip={showTooltip() && !isBotOpened() && !isTooltipDismissed()}
         position={buttonPosition()}
         buttonSize={buttonSize}
         tooltipMessage={bubbleProps.theme?.tooltip?.tooltipMessage}
         tooltipBackgroundColor={bubbleProps.theme?.tooltip?.tooltipBackgroundColor}
         tooltipTextColor={bubbleProps.theme?.tooltip?.tooltipTextColor}
         tooltipFontSize={bubbleProps.theme?.tooltip?.tooltipFontSize} // Set the tooltip font size
+        showCloseButton={bubbleProps.theme?.tooltip?.showCloseButton ?? bubbleProps.theme?.tooltip?.showCloseSign}
+        onClose={() => setIsTooltipDismissed(true)}
       />
       <BubbleButton
         {...bubbleProps.theme?.button}

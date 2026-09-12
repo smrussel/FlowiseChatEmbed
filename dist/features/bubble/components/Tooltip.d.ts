@@ -9,6 +9,9 @@ type TooltipProps = {
     tooltipBackgroundColor?: string;
     tooltipTextColor?: string;
     tooltipFontSize?: number;
+    showCloseButton?: boolean;
+    showCloseSign?: boolean;
+    onClose?: () => void;
 };
 declare const Tooltip: (props: TooltipProps) => import("solid-js").JSX.Element;
 export default Tooltip;
