@@ -39,11 +39,19 @@ yarn build
 
 ## Embed in your HTML
 
+This repository can be embedded directly via jsDelivr CDN from GitHub:
+
+```
+https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js
+```
+
+> **Note:** You can pin a specific branch, commit hash, or release tag instead of `@main` (e.g. `@main`, `@<commit-hash>`).
+
 ### PopUp
 
 ```html
 <script type="module">
-  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+  import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
   Chatbot.init({
     chatflowid: '<chatflowid>',
     apiHost: 'http://localhost:3000',
@@ -55,7 +63,7 @@ yarn build
 
 ```html
 <script type="module">
-  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+  import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
   Chatbot.initFull({
     chatflowid: '<chatflowid>',
     apiHost: 'http://localhost:3000',
@@ -69,7 +77,7 @@ To enable full screen, add `margin: 0` to <code>body</code> style. The default h
 ```html
 <body style="margin: 0">
   <script type="module">
-    import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+    import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
     Chatbot.initFull({
       chatflowid: '<chatflowid>',
       apiHost: 'http://localhost:3000',
@@ -96,7 +104,7 @@ The same options apply to `width`.
 
 ```html
 <script type="module">
-  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+  import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
   Chatbot.initFull({
     chatflowid: '<chatflowid>',
     apiHost: 'http://localhost:3000',
@@ -115,7 +123,7 @@ You can also customize chatbot with different configuration
 
 ```html
 <script type="module">
-  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+  import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
   Chatbot.init({
     chatflowid: '91e9c803-5169-4db9-8207-3c0915d71c5f',
     apiHost: 'http://localhost:3000',
@@ -260,7 +268,7 @@ Pass a CSS selector string or a direct `HTMLElement` reference:
 <div id="flowise-portal"></div>
 
 <script type="module">
-  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+  import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
 
   // Using a CSS selector string
   Chatbot.init({
@@ -285,7 +293,7 @@ The same options apply to `initFull`:
 <flowise-fullchatbot></flowise-fullchatbot>
 
 <script type="module">
-  import Chatbot from 'https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js';
+  import Chatbot from 'https://cdn.jsdelivr.net/gh/smrussel/FlowiseChatEmbed@main/dist/web.js';
   Chatbot.initFull({
     chatflowid: '<chatflowid>',
     apiHost: 'http://localhost:3000',
