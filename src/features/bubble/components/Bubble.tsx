@@ -4,7 +4,7 @@ import { BubbleButton } from './BubbleButton';
 import { BubbleParams } from '../types';
 import { Bot, BotProps } from '../../../components/Bot';
 import Tooltip from './Tooltip';
-import { getBubbleButtonSize, resolveDialogContainer } from '@/utils';
+import { getBubbleButtonSize, resolveDialogContainer, isTooltipClosedInStorage, setTooltipClosedInStorage } from '@/utils';
 import DOMPurify from 'dompurify';
 
 const defaultButtonColor = '#3B81F6';
@@ -45,21 +45,6 @@ export const Bubble = (props: BubbleProps) => {
     const handleResize = () => setViewport({ height: window.innerHeight, width: window.innerWidth });
     window.addEventListener('resize', handleResize);
     onCleanup(() => window.removeEventListener('resize', handleResize));
-
-    // When loading the script, set localStorage variable to 'false' if not yet set
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const chatflowKey = `${props.chatflowid ? `${props.chatflowid}_` : ''}tooltip_closed`;
-        if (localStorage.getItem(chatflowKey) === null) {
-          localStorage.setItem(chatflowKey, 'false');
-        }
-        if (localStorage.getItem('tooltip_closed') === null) {
-          localStorage.setItem('tooltip_closed', 'false');
-        }
-      }
-    } catch {
-      // ignore security/storage errors
-    }
   });
 
   onCleanup(() => {
@@ -114,38 +99,14 @@ export const Bubble = (props: BubbleProps) => {
     };
   });
 
-  const isClosedInStorage = () => {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const chatflowKey = `${props.chatflowid ? `${props.chatflowid}_` : ''}tooltip_closed`;
-        if (localStorage.getItem(chatflowKey) === 'true' || localStorage.getItem('tooltip_closed') === 'true') {
-          return true;
-        }
-        const upperKey = `${props.chatflowid ? `${props.chatflowid}_` : ''}TOOLTIP_CLOSED`;
-        if (localStorage.getItem(upperKey) === 'true') {
-          return true;
-        }
-      }
-    } catch {
-      // ignore security/storage errors
-    }
-    return false;
-  };
+  const isClosedInStorage = () => isTooltipClosedInStorage(props.chatflowid);
 
   const showTooltip = () => bubbleProps.theme?.tooltip?.showTooltip ?? false;
   const [isTooltipDismissed, setIsTooltipDismissed] = createSignal(isClosedInStorage());
 
   const handleTooltipClose = () => {
     setIsTooltipDismissed(true);
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const chatflowKey = `${props.chatflowid ? `${props.chatflowid}_` : ''}tooltip_closed`;
-        localStorage.setItem(chatflowKey, 'true');
-        localStorage.setItem('tooltip_closed', 'true');
-      }
-    } catch {
-      // ignore security/storage errors
-    }
+    setTooltipClosedInStorage(props.chatflowid);
   };
 
   return (

@@ -134,7 +134,7 @@ export const setCookie = (cname: string, cvalue: string, exdays: number) => {
   const d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   const expires = 'expires=' + d.toUTCString();
-  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+  document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/;SameSite=Lax';
 };
 
 export const getCookie = (cname: string): string => {
@@ -151,6 +151,57 @@ export const getCookie = (cname: string): string => {
     }
   }
   return '';
+};
+
+export const isTooltipClosedInStorage = (chatflowid?: string): boolean => {
+  try {
+    const chatflowKey = `${chatflowid ? `${chatflowid}_` : ''}tooltip_closed`;
+    const upperKey = `${chatflowid ? `${chatflowid}_` : ''}TOOLTIP_CLOSED`;
+
+    if (typeof window !== 'undefined' && window.localStorage) {
+      if (
+        localStorage.getItem(chatflowKey) === 'true' ||
+        localStorage.getItem('tooltip_closed') === 'true' ||
+        localStorage.getItem(upperKey) === 'true'
+      ) {
+        return true;
+      }
+    }
+
+    if (typeof document !== 'undefined') {
+      if (
+        getCookie(chatflowKey) === 'true' ||
+        getCookie('tooltip_closed') === 'true' ||
+        getCookie(upperKey) === 'true'
+      ) {
+        return true;
+      }
+    }
+  } catch {
+    // ignore security/storage errors in restricted environments (e.g. Safari private mode)
+  }
+  return false;
+};
+
+export const setTooltipClosedInStorage = (chatflowid?: string): void => {
+  const chatflowKey = `${chatflowid ? `${chatflowid}_` : ''}tooltip_closed`;
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(chatflowKey, 'true');
+      localStorage.setItem('tooltip_closed', 'true');
+    }
+  } catch {
+    // ignore localStorage errors
+  }
+
+  try {
+    if (typeof document !== 'undefined') {
+      setCookie(chatflowKey, 'true', 365);
+      setCookie('tooltip_closed', 'true', 365);
+    }
+  } catch {
+    // ignore cookie errors
+  }
 };
 
 export const resolveDialogContainer = (raw: unknown): HTMLElement | undefined => {
